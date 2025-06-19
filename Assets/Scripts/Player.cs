@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -8,11 +5,18 @@ public class Player : MonoBehaviour
     private Animator anim;
     private Rigidbody2D rb;
 
+    [Header("Movement Details")]
     [SerializeField] private float moveSpeed = 3.5f;
     [SerializeField] private float jumpForce = 8f;
     private float xInput;
+    private bool facingRight = true;
 
-    [SerializeField] private bool facingRight = true;
+    [Header("Collision Details")]
+    [SerializeField] private float groundCheckDistance;
+    [SerializeField] private LayerMask groundLayer;
+    private bool isGrounded;
+
+
 
     private void Awake()
     {
@@ -26,6 +30,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        HandleCollision();
+
         HandleInput();
         HandleMovement();
         HandleAnimations();
@@ -34,9 +40,10 @@ public class Player : MonoBehaviour
 
     private void HandleAnimations()
     {
-        bool isMoving = rb.velocity.x != 0;
+        anim.SetBool("isGrounded", isGrounded);
 
-        anim.SetBool("isMoving", isMoving);
+        anim.SetFloat("xVelocity", rb.velocity.x);
+        anim.SetFloat("yVelocity", rb.velocity.y);
     }
 
     private void HandleInput()
@@ -58,8 +65,13 @@ public class Player : MonoBehaviour
 
     private void Jump()
     {
+        if (isGrounded)
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+    }
 
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+    private void HandleCollision()
+    {
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
     }
 
     private void HandleFlip()
@@ -76,7 +88,13 @@ public class Player : MonoBehaviour
 
     private void Flip()
     {
-        transform.Rotate(0, 180 ,0);
+        transform.Rotate(0, 180, 0);
         facingRight = !facingRight;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawLine(transform.position, transform.position + Vector3.down * groundCheckDistance);
     }
 }
