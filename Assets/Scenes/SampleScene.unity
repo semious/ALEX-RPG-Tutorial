@@ -151,6 +151,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 8
+  jumpForce: 12
+  inAirMultiplier: 0.7
+  groundCheckDistance: 1.4
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!4 &475503418
 Transform:
   m_ObjectHideFlags: 0
@@ -160,7 +166,7 @@ Transform:
   m_GameObject: {fileID: 475503416}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.89, y: -0.51, z: 0}
+  m_LocalPosition: {x: 2.869, y: -0.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -180,9 +186,9 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDamping: 0
+  m_LinearDamping: 0.1
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -228,8 +234,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.04442346, y: -0.2985208}
-  m_Size: {x: 0.8127992, y: 2.096386}
+  m_Offset: {x: 0, y: -0.285}
+  m_Size: {x: 0.77, y: 2.096386}
   m_Direction: 0
 --- !u!1 &519420028
 GameObject:
@@ -573,7 +579,7 @@ GameObject:
   - component: {fileID: 1459736603}
   - component: {fileID: 1459736602}
   - component: {fileID: 1459736604}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}

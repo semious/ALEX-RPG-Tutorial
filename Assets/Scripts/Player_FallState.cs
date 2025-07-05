@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Player_MoveState : Player_GroundedState
+public class Player_FallState : Player_AirState
 {
-    public Player_MoveState(Player player, StateMachine stateMachine, string stateName) : base(player, stateMachine, stateName)
+    public Player_FallState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
 
@@ -20,11 +20,9 @@ public class Player_MoveState : Player_GroundedState
     {
         base.Update();
 
-        if(player.moveInput.x == 0)
+        if(player.groundDetected)
         {
             stateMachine.ChangeState(player.idleState);
         }
-
-        player.SetVelocity(player.moveInput.x * player.moveSpeed, player.rb.linearVelocity.y);
     }
 }
