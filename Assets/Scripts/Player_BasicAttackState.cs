@@ -4,6 +4,11 @@ public class Player_BasicAttackState : EntityState
 {
 
     private float attackVelocityTimer;
+
+    private const int FirstComboIndex = 1; // Starting index for combo attacks, animator should handle this
+    private int comboIndex = 1;
+    private int comboLimit = 3;
+
     public Player_BasicAttackState(Player player, StateMachine stateMachine, string animBoolName) : base(player, stateMachine, animBoolName)
     {
     }
@@ -12,8 +17,13 @@ public class Player_BasicAttackState : EntityState
     {
         base.Enter();
 
-
-        GenerateAttackVelocity();
+        if(comboIndex > comboLimit)
+        {
+            comboIndex = FirstComboIndex; // Reset combo index if it exceeds the limit
+        }
+ 
+        anim.SetInteger("basicAttackIndex", comboIndex);
+        ApplyAttackVelocity();
     }
 
     public override void Update()
@@ -27,6 +37,12 @@ public class Player_BasicAttackState : EntityState
         }
     }
 
+    public override void Exit()
+    {
+        base.Exit();
+        comboIndex++;
+    }
+
     private void HandleAttackVelocity()
     {
         attackVelocityTimer -= Time.deltaTime;
@@ -37,7 +53,7 @@ public class Player_BasicAttackState : EntityState
         }
     }
 
-    private void GenerateAttackVelocity()
+    private void ApplyAttackVelocity()
     {
         attackVelocityTimer = player.attackVelocityDuration;
         player.SetVelocity(player.attackVelocity.x * player.facingDir, player.attackVelocity.y);
