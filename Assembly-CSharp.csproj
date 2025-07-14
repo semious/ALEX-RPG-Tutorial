@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\EntityState.cs" />
     <Compile Include="Assets\Scripts\Player_FallState.cs" />
+    <Compile Include="Assets\Scripts\Player_JumpAttackState.cs" />
     <Compile Include="Assets\Scripts\Player_WallJumpState.cs" />
     <Compile Include="Assets\Scripts\Player_DashState.cs" />
     <Compile Include="Assets\Scripts\Player_GroundedState.cs" />
