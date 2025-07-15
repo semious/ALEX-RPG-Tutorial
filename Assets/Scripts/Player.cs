@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
 
     [Header("Attack Details")]
     public Vector2[] attackVelocity;
+    public Vector2 jumpAttackVelocity;
     public float attackVelocityDuration = .1f;
     public float comboResetTime = 1f;
     private Coroutine queuedAttackCo;
@@ -47,6 +48,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private float wallCheckDistance;
     [SerializeField] private LayerMask whatIsGround;
+    [SerializeField] private Transform primaryWallCheck;
+    [SerializeField] private Transform secondaryWallCheck;
+
     public bool groundDetected { get; private set; }
     public bool wallDetected { get; private set; }
 
@@ -132,20 +136,22 @@ public class Player : MonoBehaviour
 
     public void Flip()
     {
+        transform.Rotate(0, 180, 0);
         facingRight = !facingRight;
         facingDir *= -1;
-        transform.Rotate(0, 180, 0);
     }
 
     private void HandleCollisionDetect()
     {
         groundDetected = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
-        wallDetected = Physics2D.Raycast(transform.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
+        wallDetected = Physics2D.Raycast(primaryWallCheck.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround)
+          && Physics2D.Raycast(secondaryWallCheck.position, Vector2.right * facingDir, wallCheckDistance, whatIsGround);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * groundCheckDistance);
-        Gizmos.DrawLine(transform.position, transform.position + Vector3.right * wallCheckDistance * facingDir);
+        Gizmos.DrawLine(primaryWallCheck.position, primaryWallCheck.position + Vector3.right * wallCheckDistance * facingDir);
+        Gizmos.DrawLine(secondaryWallCheck.position, secondaryWallCheck.position + Vector3.right * wallCheckDistance * facingDir);
     }
 }
